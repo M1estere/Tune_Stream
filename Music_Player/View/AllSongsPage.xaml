@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.AllSongsPage"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             x:DataType="viewmodel:AllSongsPageViewModel"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="20*, 10*, 70*">
+        <Grid Grid.Row="0" ColumnDefinitions="60*, 40*">
+            <!--Page Title-->
+            <Label Grid.Column="0" 
+               Text="All Tracks" FontSize="38" TextColor="White" FontFamily="RobotoRegular"
+               VerticalOptions="Start"
+               Padding="20, 0, 0, 0"/>
+        </Grid>
+
+        <SearchBar Grid.Row="1" 
+                   x:Name="searchBar" 
+                   Placeholder="Search a song..." TextColor="White" FontSize="18" FontFamily="RobotoRegular"
+                   TextChanged="SearchBar_TextChanged"
+                   CancelButtonColor="White"/>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding SearchSongs}" BackgroundColor="Transparent" Margin="5, 0, 5, 0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="auto, 40*, 30*, 15*" HeightRequest="100" Margin="0, 7, 0, 0">
+                        <Frame BackgroundColor="#080808" Grid.ColumnSpan="4" BorderColor="#1f1e1e" CornerRadius="15">
+                            <Grid ColumnDefinitions="20*, 50*, 40*">
+
+                                <!--Cover-->
+                                <Image x:DataType="model:Song" Source="{Binding Cover}"
+                                       WidthRequest="50" HeightRequest="50" 
+                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                <!--Main info-->
+                                <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="15, 0, 2, 0" x:DataType="model:Song">
+                                    <Label x:Name="CurrentTitle" TextColor="White" FontSize="15" Text="{Binding Title}" FontFamily="RobotoLight" FontAttributes="Bold"/>
+                                    <Label TextColor="DarkGrey" FontSize="13" Text="{Binding Artist}" FontFamily="RobotoThin"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="5" Padding="55, 10, 0, 10" VerticalOptions="Center">
+                            <Button HeightRequest="25" WidthRequest="85"  BackgroundColor="White"
+                                    Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent"
+                                    Clicked="AddNextClicked"/>
+                            <Button HeightRequest="25" WidthRequest="85" BackgroundColor="Chocolate"
+                                    Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent"
+                                    Clicked="AddToEndClicked"/>
+                        </VerticalStackLayout>
+
+                        <ImageButton Grid.Column="3" x:DataType="model:Song"
+                                     Source="{Binding FavouriteImage}"
+                                     HeightRequest="35" WidthRequest="35"
+                                     Clicked="AddToFavsClicked"
+                                     CommandParameter="{Binding Source={x:Reference CurrentTitle}, Path=Text}"/>
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="9" Padding="45, 25, -5, 10" VerticalOptions="Start">
+                            <Label Text="Queue Next" TextColor="Black" FontFamily="RobotoLight"
+                                   HorizontalOptions="End"/>
+                            <Label Text="Queue Last" TextColor="Black" FontFamily="RobotoLight"
+                                   HorizontalOptions="End"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.ColumnSpan="4"
+                                Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent" BackgroundColor="Transparent"
+                                Margin="0, 0, 140, 0" CornerRadius="15"
+                                Clicked="ChooseButtonClicked"/> 
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

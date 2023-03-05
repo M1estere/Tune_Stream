@@ -1,0 +1,199 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>Music_Player</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>Tune_Stream</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>Tune_Stream</ApplicationId>
+		<ApplicationIdGuid>47c3067a-e89b-4fe5-9ce1-41c87a7fe21d</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.png" Resize="false" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\test.png" BaseSize="1000,250" Color="#000000" />
+		
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <AndroidResource Remove="Resources\Images\Player_Elements\**" />
+	  <AndroidResource Remove="Resources\Images\Playlists_Page\**" />
+	  <Compile Remove="Resources\Images\Player_Elements\**" />
+	  <Compile Remove="Resources\Images\Playlists_Page\**" />
+	  <EmbeddedResource Remove="Resources\Images\Player_Elements\**" />
+	  <EmbeddedResource Remove="Resources\Images\Playlists_Page\**" />
+	  <MauiCss Remove="Resources\Images\Player_Elements\**" />
+	  <MauiCss Remove="Resources\Images\Playlists_Page\**" />
+	  <MauiImage Remove="Resources\Images\Player_Elements\**" />
+	  <MauiImage Remove="Resources\Images\Playlists_Page\**" />
+	  <MauiXaml Remove="Resources\Images\Player_Elements\**" />
+	  <MauiXaml Remove="Resources\Images\Playlists_Page\**" />
+	  <None Remove="Resources\Images\Player_Elements\**" />
+	  <None Remove="Resources\Images\Playlists_Page\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\arrow.png" />
+	  <None Remove="Resources\Images\author.png" />
+	  <None Remove="Resources\Images\auto.png" />
+	  <None Remove="Resources\Images\chill.png" />
+	  <None Remove="Resources\Images\collections.png" />
+	  <None Remove="Resources\Images\collections.svg" />
+	  <None Remove="Resources\Images\daft_punk.png" />
+	  <None Remove="Resources\Images\elton.png" />
+	  <None Remove="Resources\Images\foster.png" />
+	  <None Remove="Resources\Images\gorillaz.png" />
+	  <None Remove="Resources\Images\heart.png" />
+	  <None Remove="Resources\Images\heart_filled_crimson.png" />
+	  <None Remove="Resources\Images\heart_unfilled_crimson.png" />
+	  <None Remove="Resources\Images\info.png" />
+	  <None Remove="Resources\Images\las_ven.jpg" />
+	  <None Remove="Resources\Images\middle.png" />
+	  <None Remove="Resources\Images\oneokrock.jpg" />
+	  <None Remove="Resources\Images\pause.png" />
+	  <None Remove="Resources\Images\personal.png" />
+	  <None Remove="Resources\Images\personal.svg" />
+	  <None Remove="Resources\Images\personal_1.png" />
+	  <None Remove="Resources\Images\personal_2.png" />
+	  <None Remove="Resources\Images\personal_3.png" />
+	  <None Remove="Resources\Images\play.png" />
+	  <None Remove="Resources\Images\playlists.png" />
+	  <None Remove="Resources\Images\post_malone.png" />
+	  <None Remove="Resources\Images\queue.png" />
+	  <None Remove="Resources\Images\queue.svg" />
+	  <None Remove="Resources\Images\repeat.png" />
+	  <None Remove="Resources\Images\replicant.png" />
+	  <None Remove="Resources\Images\sacrifice.jpg" />
+	  <None Remove="Resources\Images\songs.svg" />
+	  <None Remove="Resources\Images\song_list.png" />
+	  <None Remove="Resources\Images\sonic06.png" />
+	  <None Remove="Resources\Images\sonic_forces.png" />
+	  <None Remove="Resources\Images\sonic_front.png" />
+	  <None Remove="Resources\Images\sonic_unleashed.jpg" />
+	  <None Remove="Resources\Images\sos.jpg" />
+	  <None Remove="Resources\Images\superfruit.png" />
+	  <None Remove="Resources\Images\theworld.jpg" />
+	  <None Remove="Resources\Images\trashbin_crimson.png" />
+	  <None Remove="Resources\Images\trashbin_grey.png" />
+	  <None Remove="Resources\Images\ultimate.jpg" />
+	  <None Remove="Resources\Images\warbly.png" />
+	  <None Remove="Resources\Images\weeknd.png" />
+	  <None Remove="Resources\Raw\alive.mp3" />
+	  <None Remove="Resources\Raw\animals.mp3" />
+	  <None Remove="Resources\Raw\break_through_it_all.mp3" />
+	  <None Remove="Resources\Raw\circles.mp3" />
+	  <None Remove="Resources\Raw\cold_heart.mp3" />
+	  <None Remove="Resources\Raw\endless_possibility.mp3" />
+	  <None Remove="Resources\Raw\feel_good_inc..mp3" />
+	  <None Remove="Resources\Raw\get_lucky.mp3" />
+	  <None Remove="Resources\Raw\guy.exe.mp3" />
+	  <None Remove="Resources\Raw\his_world.mp3" />
+	  <None Remove="Resources\Raw\infinite.mp3" />
+	  <None Remove="Resources\Raw\in_your_eyes.mp3" />
+	  <None Remove="Resources\Raw\i_feel_it_coming.mp3" />
+	  <None Remove="Resources\Raw\middle_of_a_breakup.mp3" />
+	  <None Remove="Resources\Raw\pumped_up_kicks.mp3" />
+	  <None Remove="Resources\Raw\sacrifice.mp3" />
+	  <None Remove="Resources\Raw\sad_clown.mp3" />
+	  <None Remove="Resources\Raw\save_yourself.mp3" />
+	  <None Remove="Resources\Raw\say_it_louder.mp3" />
+	  <None Remove="Resources\Raw\scared_of_the_dark.mp3" />
+	  <None Remove="Resources\Raw\shadowlord.mp3" />
+	  <None Remove="Resources\Raw\sunflower.mp3" />
+	  <None Remove="Resources\Raw\the_world.mp3" />
+	  <None Remove="Resources\Raw\ultimate.mp3" />
+	  <None Remove="Resources\Raw\undefeatable.mp3" />
+	  <None Remove="Resources\Raw\vandalize.mp3" />
+	  <None Remove="Resources\Raw\want_you_back.mp3" />
+	  <None Remove="Resources\Raw\world_adventure.mp3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Covers\daft_punk.png" />
+	  <MauiImage Include="Resources\Images\Covers\dotnet_bot.svg" />
+	  <MauiImage Include="Resources\Images\Covers\elton.png" />
+	  <MauiImage Include="Resources\Images\Covers\foster.png" />
+	  <MauiImage Include="Resources\Images\Covers\gorillaz.png" />
+	  <MauiImage Include="Resources\Images\Covers\post_malone.png" />
+	  <MauiImage Include="Resources\Images\Covers\superfruit.png" />
+	  <MauiImage Include="Resources\Images\Covers\warbly.png" />
+	  <MauiImage Include="Resources\Images\Covers\weeknd.png" />
+	  <MauiImage Include="Resources\Images\Personal_Page\author.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="NAudio" Version="2.1.0" />
+	  <PackageReference Include="Plugin.Maui.Audio" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="View\CollectionsPage.xaml.cs">
+	    <DependentUpon>CollectionsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\QueuePage.xaml.cs">
+	    <DependentUpon>QueuePage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AllSongsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AuthorsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\CollectionsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\PersonalPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\PlaylistInfoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\PlaylistsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\QueuePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionMusic_PlayerHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionMusic_PlayerHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
+</Project>

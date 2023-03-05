@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.AuthorsPage"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             x:DataType="viewmodel:AuthorsPageViewModel"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="10*, 85*">
+        <Grid Grid.Row="0" ColumnDefinitions="60*, 40*">
+            <!--Page Title-->
+            <Label Grid.Column="0" 
+               Text="Authors" FontSize="38" TextColor="White" FontFamily="RobotoRegular"
+               VerticalOptions="Start"
+               Padding="20, 0, 0, 0"/>
+        </Grid>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Authors}" BackgroundColor="Transparent" Margin="5, 0, 5, 0">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 VerticalItemSpacing="25"/>
+            </CollectionView.ItemsLayout>
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:AuthorBlock">
+                    <Grid HeightRequest="200" WidthRequest="200" 
+                          Margin="0, 7, 0, 0">
+
+                        <Grid RowDefinitions="65*, 35*" BackgroundColor="Transparent">
+                            <Frame Grid.Row="0" 
+                                   BackgroundColor="{Binding BlockColor}" CornerRadius="250" 
+                                   HeightRequest="130" WidthRequest="130" 
+                                   BorderColor="Transparent"/>
+                            <Frame Grid.Row="0" 
+                                   CornerRadius="150" 
+                                   HeightRequest="120" WidthRequest="120" 
+                                   BorderColor="Transparent">
+                                <Image Source="{Binding AuthorCover}" Scale=".9"
+                                       HeightRequest="140" WidthRequest="140" 
+                                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                            </Frame>
+
+                            <Button Grid.Row="0"
+                                    Text="{Binding Author}" TextColor="Transparent"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="130" WidthRequest="130" CornerRadius="150"
+                                    Clicked="AuthorClicked"/>
+
+                            <VerticalStackLayout Grid.Row="1">
+                                <Label Text="{Binding Author}" TextColor="White" FontSize="14" FontFamily="RobotoLight" CharacterSpacing="1.5"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                <Label Text="{Binding Path=TitlesCount, StringFormat='Tracks: {0}'}" TextColor="DarkGrey" FontSize="13" FontFamily="RobotoThin"
+                                       CharacterSpacing="1"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                        
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

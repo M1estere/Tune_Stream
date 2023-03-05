@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.PlaylistInfoPage"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             x:DataType="viewmodel:PlaylistInfoPageViewModel"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="20*, 90*">
+        <Grid Grid.Row="0" RowDefinitions="*, *">
+            <!--Page Title-->
+            <Label Grid.Row="0"
+                   Text="{Binding PlaylistTitle, Mode=TwoWay}" FontSize="38" TextColor="White" FontFamily="RobotoRegular"
+                   CharacterSpacing=".5"
+                   VerticalOptions="Start"
+                   Padding="20, 10, 0, 0"/>
+            <Label Grid.Row="1" 
+                   Text="Playlist Information" TextColor="Gray" FontSize="18" FontFamily="RobotoLight"
+                   Padding="20, 0, 0, 0"/>
+
+        </Grid>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Songs}" BackgroundColor="Transparent" Margin="5, 0, 5, 0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="auto, *, *" HeightRequest="110" Margin="0, 7, 0, 0">
+                        <Frame BackgroundColor="#171717" Grid.ColumnSpan="3" BorderColor="Transparent" CornerRadius="2">
+                            <Grid ColumnDefinitions="20*, 50*, 40*">
+
+                                <!--Cover-->
+                                <Image x:DataType="model:Song" Source="{Binding Cover}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                <!--Main info-->
+                                <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="15, 0, 0, 0" x:DataType="model:Song">
+                                    <Label x:Name="CurrentTitle" TextColor="White" FontSize="15" Text="{Binding Title}" FontFamily="RobotoLight" FontAttributes="Bold"/>
+                                    <Label TextColor="DarkGrey" FontSize="12" Text="{Binding Artist}" FontFamily="RobotoLight"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="5" Padding="25, 10, 0, 10" VerticalOptions="Center">
+                            <Button HeightRequest="30" WidthRequest="110"  BackgroundColor="White"
+                                    Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent"
+                                    Clicked="AddNextClicked"/>
+                            <Button HeightRequest="30" WidthRequest="110" BackgroundColor="Chocolate"
+                                    Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent"
+                                    Clicked="AddToEndClicked"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="10, 27, 25, 10" VerticalOptions="Start">
+                            <Label Text="Queue Next" TextColor="Black" FontFamily="RobotoLight"
+                                   HorizontalOptions="End"
+                                   CharacterSpacing="1"/>
+                            <Label Text="Queue Last" TextColor="Black" FontFamily="RobotoLight"
+                                   HorizontalOptions="End"
+                                   CharacterSpacing="1"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.ColumnSpan="3" Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent" BackgroundColor="Transparent"
+                                Margin="0, 0, 140, 0"
+                                Clicked="ChooseButtonClicked"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

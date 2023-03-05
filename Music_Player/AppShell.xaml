@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Music_Player.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Music_Player"
+    xmlns:view="clr-namespace:Music_Player.View"
+    Shell.PresentationMode="Modal">
+
+    <TabBar>
+        <Tab Title="Queue" Icon="queue.svg">
+            <ShellContent
+            ContentTemplate="{DataTemplate view:QueuePage}"
+            Route="QueuePage"/>
+        </Tab>
+
+        <Tab Title="Collections" Icon="collections.svg">
+            <ShellContent
+                ContentTemplate="{DataTemplate view:CollectionsPage}"
+                Route="CollectionsPage"/>
+        </Tab>
+
+        <Tab Title="Personal" Icon="personal.svg">
+            <ShellContent
+                ContentTemplate="{DataTemplate view:PersonalPage}"
+                Route="PersonalPage"/>
+        </Tab>
+
+    </TabBar>
+
+</Shell>

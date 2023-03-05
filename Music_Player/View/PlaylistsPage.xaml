@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             x:Class="Music_Player.View.PlaylistsPage"
+             x:DataType="viewmodel:PlaylistsPageViewModel"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="10*, 85*, 10*">
+        <Grid Grid.Row="0" ColumnDefinitions="80*, 20*">
+            <!--Page Title-->
+            <Label Grid.Column="0" 
+               Text="Your Library" FontSize="38" TextColor="White" FontFamily="RobotoRegular"
+               VerticalOptions="Start"
+               Padding="20, 0, 0, 0"/>
+        </Grid>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding UserPlaylists}" BackgroundColor="Transparent">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Playlist">
+                    <Grid RowDefinitions="30*, 60*" ColumnDefinitions="60*, 5*, 30*"
+                          HorizontalOptions="StartAndExpand" 
+                          BackgroundColor="Transparent" 
+                          Margin="10, 15, 0, 0" 
+                          HeightRequest="150" WidthRequest="310">
+                        <Frame Grid.RowSpan="3" Grid.ColumnSpan="3" 
+                               BackgroundColor="{Binding PlaylistColor}" BorderColor="Transparent"
+                               CornerRadius="15"/>
+
+                        <Image Grid.Row="0" Grid.Column="0"
+                               Source="{Binding PersonalImage}" 
+                               HeightRequest="65" WidthRequest="65" 
+                               VerticalOptions="Start" HorizontalOptions="Start" 
+                               Margin="15, 10, 0, 0"/>
+                        
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Padding="10, 30, 0, 0">
+                            <Label Grid.Row="1" Grid.Column="0"
+                               x:Name="name" Text="{Binding PlaylistName}" FontSize="25" TextColor="White" FontFamily="RobotoRegular"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="Center" HorizontalOptions="Start"/>
+                            <Label Grid.Row="2" Grid.Column="0"
+                               Text="{Binding Path=SongsAmount, StringFormat='Tracks: {0}'}" FontSize="15" TextColor="Silver" FontFamily="RobotoLight"
+                               HorizontalOptions="Start" VerticalOptions="Center"/>
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout Grid.RowSpan="2" Grid.Column="2" Padding="0, 20, 0, 0" Spacing="10">
+                            <ImageButton Grid.Row="0" Grid.Column="2"
+                                     Source="info.png"
+                                     HeightRequest="50" WidthRequest="50"
+                                     Clicked="PlaylistInfoClicked"
+                                     CommandParameter="{Binding Source={x:Reference name}, Path=Text}"/>
+
+                            <ImageButton Grid.Row="1" Grid.Column="2"
+                                     Source="trashbin_crimson.png"
+                                     HeightRequest="50" WidthRequest="50"
+                                     Clicked="RemovePlaylistClicked"
+                                     CommandParameter="{Binding Source={x:Reference name}, Path=Text}"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.RowSpan="3" Grid.ColumnSpan="2"
+                                Text="{Binding Source={x:Reference name}, Path=Text}" TextColor="Transparent"
+                                BackgroundColor="Transparent" CornerRadius="20"
+                                Clicked="PlaylistClicked"/>
+
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="2" Margin="15, 0, 15, 0" Text="Clear All" FontSize="20" FontFamily="RobotoRegular"
+                CharacterSpacing="3" HeightRequest="55"
+                Command="{Binding ClearAllPlaylists}"
+                IsEnabled="{Binding CanClear}"/>
+    </Grid>
+
+</ContentPage>

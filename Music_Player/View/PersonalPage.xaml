@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.PersonalPage"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             x:DataType="viewmodel:PersonalPageViewModel"
+             Title="PersonalPage"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="15*, 25*, 15*, 45*">
+        
+        <!--Page Title-->
+        <Label Grid.Row="0" Text="Your Music" FontSize="38" TextColor="White" Padding="20" FontFamily="RobotoRegular"/>
+
+        <Grid Grid.Row="1" RowDefinitions="*, *, *" BackgroundColor="Transparent" RowSpacing="15">
+            <!--Playlists Title And Button Area-->
+            <Grid Grid.Row="0" 
+                  ColumnDefinitions="10*, 80*, 15*" Padding="20, 0, 20, 0" BackgroundColor="Transparent">
+                <Image Grid.Column="0" 
+                       Source="playlists.png" 
+                       HeightRequest="45" WidthRequest="45"/>
+                <Label Grid.Column="1" 
+                       Text="Playlists" FontSize="30" TextColor="White" FontFamily="RobotoRegular"
+                       VerticalOptions="Center" Padding="15, 0, 0, 0" CharacterSpacing="1"/>
+                <Image Grid.Column="2"
+                       HeightRequest="50" WidthRequest="50"
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       Source="arrow.png"/>
+            </Grid>
+            <Button Grid.Row="0"
+                    BackgroundColor="Transparent"
+                    HeightRequest="70"
+                    Command="{Binding GoToPlaylists}"/>
+
+            <!--All Songs Title And Button Area-->
+            <Grid Grid.Row="1" 
+                  ColumnDefinitions="10*, 80*, 15*" Padding="20, 0, 20, 0" 
+                  BackgroundColor="Transparent">
+                <Image Grid.Column="0" 
+                       Source="song_list.png" 
+                       HeightRequest="40" WidthRequest="40"/>
+                <Label Grid.Column="1" 
+                       Text="All Songs" FontSize="30" TextColor="White" FontFamily="RobotoRegular"
+                       VerticalOptions="Center" 
+                       Padding="15, 0, 0, 0" CharacterSpacing="1"/>
+                <Image Grid.Column="2"
+                       HeightRequest="50" WidthRequest="50"
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       Source="arrow.png"/>
+            </Grid>
+            <Button Grid.Row="1"
+                    BackgroundColor="Transparent"
+                    HeightRequest="70"
+                    Command="{Binding GoToAllSongs}"/>
+            
+            <!--Authors Block-->
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="10*, 80*, 15*" Padding="20, 0, 20, 0" 
+                  BackgroundColor="Transparent">
+                <Image Grid.Column="0" 
+                       Source="author.png" 
+                       HeightRequest="40" WidthRequest="40"/>
+                <Label Grid.Column="1" 
+                       Text="Authors" FontSize="30" TextColor="White" FontFamily="RobotoRegular"
+                       VerticalOptions="Center" 
+                       Padding="15, 0, 0, 0" CharacterSpacing="1"/>
+                <Image Grid.Column="2"
+                       HeightRequest="50" WidthRequest="50"
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       Source="arrow.png"/>
+            </Grid>
+            <Button Grid.Row="2"
+                    BackgroundColor="Transparent"
+                    HeightRequest="70"
+                    Command="{Binding GoToAuthors}"/>
+            
+        </Grid>
+        <!--Favourites Title Display-->
+        <Grid Grid.Row="2">
+            <Grid Grid.Row="1" ColumnDefinitions="10*, 80*, 20*" Padding="20, 0, 20, 0" BackgroundColor="Transparent">
+                <Image Grid.Column="0" 
+                       Source="heart.png" 
+                       HeightRequest="40" WidthRequest="40"/>
+                <Label Grid.Column="1" 
+                       Text="Favourites" FontSize="30" TextColor="White" FontFamily="RobotoRegular"
+                       VerticalOptions="Center" HorizontalOptions="Start" 
+                       Padding="15, 0, 0, 0" CharacterSpacing="1"/>
+                <Button Grid.Column="2"
+                        HeightRequest="50" WidthRequest="80"
+                        HorizontalOptions="Center"
+                        Text="Empty" FontSize="13" CharacterSpacing="2" FontFamily="RobotoLight"
+                        IsEnabled="{Binding CanClear}"
+                        Command="{Binding ClearFavourites}"/>
+            </Grid>
+        </Grid>
+
+        <!--Favourite Songs Display-->
+        <CollectionView Grid.Row="3" ItemsSource="{Binding FavouriteSongs}" BackgroundColor="Transparent" Margin="10, -30, 5, 0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Song">
+                    <Grid ColumnDefinitions="auto, *" HeightRequest="90" Margin="0, 7, 0, 0">
+                        <Frame BackgroundColor="#080808" Grid.ColumnSpan="4" BorderColor="#1f1e1e" CornerRadius="15">
+                            <Grid ColumnDefinitions="15*, 55*, 20*">
+
+                                <!--Cover-->
+                                <Image x:DataType="model:Song" Source="{Binding Cover}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                <!--Main info-->
+                                <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="15, 0, 0, 0" x:DataType="model:Song">
+                                    <Label x:Name="CurrentTitle" TextColor="White" FontSize="16" Text="{Binding Title}" FontFamily="RobotoLight" FontAttributes="Bold"/>
+                                    <Label TextColor="DarkGrey" FontSize="13" Text="{Binding Artist}" FontFamily="RobotoThin"/>
+                                </StackLayout>
+
+                                <!--Interact Buttons-->
+                                <Grid Grid.Column="2" HeightRequest="35" ColumnDefinitions="*, *" ColumnSpacing="10" Padding="0, 0, 20, 0" BackgroundColor="Transparent">
+                                    <ImageButton Grid.Column="1"
+                                                 Source="trashbin_crimson.png"
+                                                 HeightRequest="40" WidthRequest="40"
+                                                 Clicked="RemoveButtonClicked"
+                                                 CommandParameter="{Binding Source={x:Reference CurrentTitle}, Path=Text}"/>
+                                </Grid>
+                            </Grid>
+                        </Frame>
+                        <Button Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent" BackgroundColor="Transparent" Grid.ColumnSpan="3"
+                                Margin="0, 0, 90, 0" CornerRadius="15"
+                                Clicked="ChooseButtonClicked"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

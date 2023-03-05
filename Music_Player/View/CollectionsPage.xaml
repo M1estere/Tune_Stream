@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.CollectionsPage"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             x:DataType="viewmodel:CollectionsPageViewModel"
+             Title="Playlists"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="Black">
+
+    <Grid RowDefinitions="15*">
+
+        <!--Padding: Left up right down-->
+        <RefreshView Command="{Binding UpdatePage}" IsRefreshing="{Binding IsRefresh}" RefreshColor="Crimson"> 
+            <Grid RowDefinitions="10*, 25*, 10*, 25*, 10*, 25*">
+                <!--Page Title-->
+                <Label Grid.Row="0" Text="Browse" FontSize="38" TextColor="White" Padding="20, 20, 0, 0" FontFamily="RobotoRegular"/>
+
+                <!--Everyday Chill Playlist Display-->
+                <Grid Grid.Row="1" Padding="20, 0, 20, 0">
+                    <Button HeightRequest="175" 
+                    Text="{Binding Source={x:Reference EveryDay}, Path=Text}" TextColor="Transparent"
+                    BackgroundColor="{Binding EverydayColor}"
+                    CornerRadius="18"
+                    Clicked="PlaylistClicked"/>
+                    <Image Source="chill.png" 
+                   HeightRequest="75" WidthRequest="75" 
+                   VerticalOptions="Start" HorizontalOptions="Center" 
+                   Margin="0, 35, 0, 0"/>
+                    <Label x:Name="EveryDay" Text="Everyday Chill" FontSize="30" TextColor="White" FontFamily="RobotoRegular"
+                   VerticalOptions="End" HorizontalOptions="Center" 
+                   Padding="0, 0, 0, 20"/>
+                </Grid>
+
+                <!--Best of all times Section-->
+                <Grid Grid.Row="2" ColumnDefinitions="10*, 90*" Padding="20, 0, 20, 0">
+                    <Button Grid.Column="0" 
+                    HeightRequest="35" WidthRequest="35"
+                    IsEnabled="False" BackgroundColor="Crimson"/>
+                    <Label Grid.Column="1" 
+                   Text="Best of all times" TextColor="White" FontSize="25" 
+                   VerticalTextAlignment="Center" HorizontalTextAlignment="Start" 
+                   Padding="10, 0, 0, 0"/>
+                </Grid>
+
+                <!--Best Playlists Area-->
+                <CollectionView Grid.Row="3" ItemsSource="{Binding PlaylistsOfTheDay}" BackgroundColor="Transparent" Margin="10, 0, 0, 0">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Playlist">
+                            <Grid RowDefinitions="50*, 30*" ColumnDefinitions="*, *" BackgroundColor="Transparent" Margin="10, 0, 15, 0" HeightRequest="175" WidthRequest="175">
+                                <Frame Grid.RowSpan="2" Grid.ColumnSpan="2" BackgroundColor="{Binding PlaylistColor}" BorderColor="Transparent" CornerRadius="18"/>
+                                <Image Grid.Row="0" Source="{Binding Image}"
+                                       HeightRequest="65" WidthRequest="65" 
+                                       VerticalOptions="Start" HorizontalOptions="Start" 
+                                       Margin="15, 20, 0, 0"/>
+                                <Grid Grid.Row="1" Grid.ColumnSpan="2" RowDefinitions="10*, 10*" Padding="20, 0, 0, 0">
+                                    <Label Grid.Row="0" x:Name="name" Text="{Binding PlaylistName}" FontSize="25" TextColor="White" FontFamily="RobotoRegular"/>
+                                    <Label Grid.Row="1" Text="{Binding Path=SongsAmount, StringFormat='Tracks: {0}'}" FontSize="15" TextColor="Silver" FontFamily="RobotoLight"/>
+                                </Grid>
+
+                                <Button Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Source={x:Reference name}, Path=Text}" TextColor="Transparent"
+                                        x:DataType="viewmodel:CollectionsPageViewModel" BackgroundColor="Transparent" CornerRadius="20"
+                                        Clicked="PlaylistClicked"/>
+                                <ImageButton Grid.Row="0" Grid.Column="1"
+                                             Source="info.png"
+                                             HeightRequest="55" WidthRequest="55"
+                                             VerticalOptions="Center" HorizontalOptions="Center"
+                                             Clicked="OpenPlaylistClicked"
+                                             CommandParameter="{Binding Source={x:Reference name}, Path=Text}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--New & Hot Title Display-->
+                <Grid Grid.Row="4" ColumnDefinitions="10*, 90*" Padding="20, 0, 20, 0">
+
+                    <Button Grid.Column="0" 
+                    HeightRequest="35" WidthRequest="35" 
+                    IsEnabled="False" BackgroundColor="Crimson"/>
+                    <Label Grid.Column="1" 
+                   Text="New &amp; Hot" TextColor="White" FontSize="25"
+                   VerticalTextAlignment="Center" HorizontalTextAlignment="Start" 
+                   Padding="10, 0, 0, 0"/>
+
+                </Grid>
+
+                <!--New & Hot Content Display Area-->
+                <CollectionView Grid.Row="5" ItemsSource="{Binding NewHot}" BackgroundColor="Transparent" Margin="10, 0, 0, 0">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Playlist">
+
+                            <Grid RowDefinitions="50*, 30*" ColumnDefinitions="80*, 40*" Margin="10, 0, 15, 0" HeightRequest="175" WidthRequest="275" BackgroundColor="Transparent">
+
+                                <Frame Grid.RowSpan="2" Grid.ColumnSpan="2"
+                                       BackgroundColor="{Binding PlaylistColor}" 
+                                       BorderColor="Transparent" CornerRadius="18"/>
+                                <Image Grid.Row="0" Source="{Binding Image}"
+                                       HeightRequest="65" WidthRequest="65" 
+                                       VerticalOptions="Start" HorizontalOptions="Start" 
+                                       Margin="15, 20, 0, 0"/>
+                                <Grid Grid.Row="1" Grid.ColumnSpan="2" 
+                                      RowDefinitions="10*, 10*" 
+                                      Padding="20, 0, 0, 0">
+                                    <Label Grid.Row="0" x:Name="name" Text="{Binding PlaylistName}" FontSize="25" TextColor="White" FontFamily="RobotoRegular"/>
+                                    <Label Grid.Row="1" Text="{Binding Path=SongsAmount, StringFormat='Tracks: {0}'}" FontSize="15" TextColor="Silver" FontFamily="RobotoLight"/>
+                                </Grid>
+                                <Button Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Source={x:Reference name}, Path=Text}" TextColor="Transparent"
+                                        x:DataType="viewmodel:CollectionsPageViewModel" BackgroundColor="Transparent" CornerRadius="20"
+                                        Clicked="PlaylistClicked"/>
+                                <ImageButton Grid.Row="0" Grid.Column="1"
+                                             Source="info.png"
+                                             HeightRequest="55" WidthRequest="55"
+                                             VerticalOptions="Center" HorizontalOptions="Center"
+                                             Clicked="OpenPlaylistClicked"
+                                             CommandParameter="{Binding Source={x:Reference name}, Path=Text}"/>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
+        </RefreshView>
+
+    </Grid>
+
+</ContentPage>

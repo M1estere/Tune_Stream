@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Music_Player.View.QueuePage"
+             xmlns:model="clr-namespace:Music_Player.Model"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModel"
+             x:DataType="viewmodel:QueuePageViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="Black">
+
+    <Grid RowDefinitions="15*, 50*, 11*, 40*">
+        <!--Page Title-->
+        <Label Grid.Row="0" 
+               Text="Queue" FontSize="38" TextColor="White" FontFamily="RobotoRegular"
+               Padding="20"/>
+
+        <!--Current Song Info Display-->
+        <Grid Grid.Row="1" RowDefinitions="60*, 40*">
+            <Grid Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center">
+                <Frame WidthRequest="200" HeightRequest="200" 
+                       BackgroundColor="Transparent" BorderColor="Transparent"
+                       CornerRadius="15">
+                    <Image Source="{Binding CurrentCover}" 
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           WidthRequest="200" HeightRequest="200"/>
+                </Frame>
+            </Grid>
+            <StackLayout Grid.Row="1" Spacing="2">
+                <Label Text="{Binding CurrentTrackName}" FontSize="24" TextColor="White" FontFamily="RobotoLight" FontAttributes="Bold"
+                       HorizontalOptions="Center" Padding="0, 10, 0, 0" 
+                       CharacterSpacing="3"/>
+                <Label Text="{Binding CurrentTrackAuthor}" FontSize="18" TextColor="Grey" FontFamily="RobotoThin"
+                       HorizontalOptions="Center"
+                       CharacterSpacing="1"/>
+
+                <Slider Margin="20, 15, 20, 0" BackgroundColor="Transparent"
+                        ThumbColor="White" MinimumTrackColor="Crimson" MaximumTrackColor="DarkGray"
+                        Value="{Binding CurrentProgressForSlider, Mode=TwoWay}" IsEnabled="True"
+                        Maximum="{Binding CurrentTrackDuration}"
+                        DragCompleted="SliderCompleted"/>
+                
+                <Grid ColumnDefinitions="10*, 80*, 10*" HeightRequest="35" Padding="20, 0, 17, 0">
+                    <Label Grid.Column="0" BackgroundColor="Transparent"
+                           FontSize="11" TextColor="DarkGray"
+                           Text="{Binding CurrentSecond}"
+                           FontFamily="RobotoThin"/>
+                    <Label Grid.Column="2" BackgroundColor="Transparent"
+                           FontSize="11" TextColor="DarkGray"
+                           Text="{Binding CurrentTrackDuration}"
+                           FontFamily="RobotoThin"/>
+                </Grid>
+            </StackLayout>
+        </Grid>
+
+        <!--Queue Control Buttons-->
+        <Grid Grid.Row="2" ColumnDefinitions="*, *, *, *, *">
+            <Label Grid.Column="1"
+                   Text="{Binding CurrentRepeatState}"
+                   FontSize="10" TextColor="White" FontAttributes="Bold"
+                   Padding="-39, 29, 0, 0"/>
+            <ImageButton Grid.Column="0"
+                         HeightRequest="35" WidthRequest="35"
+                         Source="repeat.png" 
+                         Rotation="90"
+                         Command="{Binding ChangePlayerRepeatingState}"/>
+            <ImageButton Grid.Column="1"
+                         HeightRequest="45" WidthRequest="45"
+                         Source="arrows.png"
+                         Command="{Binding Previous}"/>
+            <ImageButton Grid.Column="2"
+                         HeightRequest="55" WidthRequest="55"
+                         Source="{Binding CurrentGif}"
+                         Command="{Binding ChangeState}"/>
+            <ImageButton Grid.Column="3"
+                         HeightRequest="45" WidthRequest="45"
+                         Source="arrows.png"
+                         Rotation="180"
+                         Command="{Binding Next}"/>
+            <ImageButton Grid.Column="4"
+                         HeightRequest="35" WidthRequest="35"
+                         Source="save.png"
+                         Command="{Binding SavePlaylist}"/>
+        </Grid>
+
+        <!--Queue list-->
+        <Frame Grid.Row="3" 
+               BorderColor="#333333" BackgroundColor="Transparent"
+               CornerRadius="10"/>
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Songs, Mode=TwoWay}"
+                        BackgroundColor="Transparent" 
+                        Margin="8, 0, 8, 10" 
+                        CanReorderItems="True"
+                        ReorderCompleted="ReorderCompleted">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="auto, *" HeightRequest="90" Margin="0, 10, 0, 0">
+                        <Frame BackgroundColor="Transparent" Grid.ColumnSpan="4" BorderColor="#333333" CornerRadius="8">
+                            <Grid ColumnDefinitions="15*, 55*, 20*">
+
+                                <!--Cover-->
+                                <Image x:DataType="model:Song" Source="{Binding Cover}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                <!--Main info-->
+                                <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="15, 0, 0, 0" x:DataType="model:Song">
+                                    <Label x:Name="CurrentTitle" TextColor="White" FontSize="15" Text="{Binding Title}" FontFamily="RobotoLight" FontAttributes="Bold"/>
+                                    <Label TextColor="DarkGrey" FontSize="12" Text="{Binding Artist}" FontFamily="RobotoLight" CharacterSpacing="1"/>
+                                </StackLayout>
+
+                                <!--Interact Buttons-->
+                                <Grid Grid.Column="2" HeightRequest="35" ColumnDefinitions="*, *, .1*" ColumnSpacing="5">
+                                    <ImageButton Grid.Column="0" Source="trashbin_grey.png"
+                                                 HeightRequest="35" WidthRequest="35"
+                                                 Clicked="DeleteButtonClicked"
+                                                 CommandParameter="{Binding Source={x:Reference CurrentTitle}, Path=Text}"/>
+                                    <ImageButton x:DataType="model:Song" Grid.Column="1" Source="{Binding FavouriteImage}"
+                                                 HeightRequest="45" WidthRequest="45"
+                                                 Padding="5, 0, 0, 0"
+                                                 Clicked="ToFavouriteClicked"
+                                                 CommandParameter="{Binding Source={x:Reference CurrentTitle}, Path=Text}"/>
+                                </Grid>
+
+                            </Grid>
+                        </Frame>
+                        <Button Text="{Binding Source={x:Reference CurrentTitle}, Path=Text}" TextColor="Transparent" BackgroundColor="Transparent" Grid.ColumnSpan="3"
+                                Clicked="ChooseButtonClicked" Margin="0, 0, 110, 0"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>
